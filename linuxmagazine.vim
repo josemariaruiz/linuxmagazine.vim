@@ -8,10 +8,33 @@ if exists("b:current_syntax")
 	finish
 endif
 
+
+
 " Keywords
-syn keyword lmTitle ZT
-syn keyword lmKeywords  L LI IT D V
-syn region lmCommand start=+@+ end=+:+ contains=lmTitle,lmKeywords
+
+syn keyword lmKeywords   LI IT
+syn region lmCommand start=+@+ end=+:+ contains=lmKeywords
+
+
+"---------------------------------------
+" Capturing 
+" @ZT:This is my title
+"---------------------------------------
+syn match lmTitleText "\.\+"
+syn keyword lmTitleTag ZT L D V
+syn region lmTitle start=+@+ end=+:+ contains=lmTitleTag nextgroup=lmTitleText
+
+
+"---------------------------------------
+" Capturing
+" <u>http://www.google.com<u>
+" <c>MyClass()<c>
+"---------------------------------------
+syn match lmUrl "[^<]+"
+syn match lmText "[^<]+"
+syn region lmUrlTag start=+<u>+ end=+<u>+ contains=lmUrl
+syn region lmVerbatimTag start=+<c>+ end=+<c>+ contains=lmText
+
 
 
 "------------------------------------------------------------/
@@ -22,4 +45,13 @@ let b:current_syntax = "linuxmagazine"
 
 hi def link lmKeywords Keyword
 hi def link lmCommand Statement
-hi def link lmTitle Type
+
+hi def link lmUrl Keyword
+hi def link lmUrlTag Comment
+
+hi def link lmText Constant 
+hi def link lmVerbatimTag Keyword
+
+hi def link lmTitleText Type 
+hi def link lmTitleTag Type
+hi def link lmTitle Keyword
